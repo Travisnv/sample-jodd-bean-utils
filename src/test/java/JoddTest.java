@@ -44,13 +44,16 @@ public class JoddTest {
             var expressions = new String(ins.readAllBytes(), Charset.defaultCharset());
             Arrays.stream(expressions.split(System.lineSeparator()))
                     .map(x -> x.split(","))
-                    .forEach(test -> {
-                        System.out.println("Test bean with expression:`" + test[0] + "` to have value:`" + test[1] + "`");
-                        assertEquals(BeanUtil.pojo.getProperty(bean, test[0]), test[1]);
-                    });
+                    .forEach(test -> testExpression(test[0], test[1], bean));
         } catch (IOException e) {
+            System.out.println("There is error for reading expression file. Please check again.");
             throw new RuntimeException(e);
         }
         System.out.println("Test completed!");
+    }
+
+    private void testExpression(String expression, String expected, Object bean) {
+        System.out.println("Test bean with expression:`" + expression + "` to have value:`" + expected + "`");
+        assertEquals(BeanUtil.pojo.getProperty(bean, expression), expected);
     }
 }
