@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JoddTest {
 
@@ -30,7 +32,6 @@ public class JoddTest {
 
         var bean = new TargetBean();
         bean.setName("target_bean_name");
-        bean.setDescription("target_bean_description");
         bean.setTasks(List.of("target_task1", "target_task2"));
         bean.setNestedObjects(List.of(nested, nested2));
         this.bean = bean;
@@ -54,6 +55,10 @@ public class JoddTest {
 
     private void testExpression(String expression, String expected, Object bean) {
         System.out.println("Test bean with expression:`" + expression + "` to have value:`" + expected + "`");
-        assertEquals(BeanUtil.pojo.getProperty(bean, expression), expected);
+        if (expected.equals("null")) {
+            assertTrue(Optional.ofNullable(BeanUtil.pojo.getProperty(bean, expression)).isEmpty());
+        } else {
+            assertEquals(BeanUtil.pojo.getProperty(bean, expression), expected);
+        }
     }
 }

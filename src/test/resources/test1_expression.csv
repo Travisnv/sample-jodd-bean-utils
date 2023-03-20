@@ -1,3 +1,4 @@
 name,target_bean_name
+description,null
 tasks[1],target_task2
 nestedObjects[0].tasks[1],nestedTask11
